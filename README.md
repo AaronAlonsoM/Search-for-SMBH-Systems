@@ -1,6 +1,6 @@
 # Search for Supermassive Binary Black Holes Systems: A brief presentation of the improved methodology
 
-This work is based on <a href="#ref1">[1]</a> as part of my bachelor's thesis. In that work, singular spectrum analysis (SSA) is employed for the first time on data from the Fermi-LAT Space Telescope to study periodicities on the light curves of several blazars. The aim of using SSA is to isolate the periodic behaviour of the emissions from long-term trends and noise, and then compute the Lomb-Scargle periodogram (LSP) on the isolated oscillatory component to determine the most significant periods.
+This work is based on <a href="#ref1">[1]</a> as part of my bachelor's thesis. There, singular spectrum analysis (SSA) is employed for the first time on data from the Fermi-LAT Space Telescope to study periodicities on the light curves of several blazars. The aim of using SSA is to isolate the periodic behaviour of the emissions from long-term trends and noise, and then compute the Lomb-Scargle periodogram (LSP) on the isolated oscillatory component to determine the most significant periods.
 As a result, 46 blazars are identified as potential candidates for quasi-periodic oscillations (QPOs), which provides a foundation for future investigations on the detection of binary supermas
 sive black hole (SMBHs) systems. Here, some alternatives are presented to try to get more evidence on the previous results. This includes:
 - Time series analysis to identify the relevant components using a new approach.
