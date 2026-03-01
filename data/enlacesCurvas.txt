@@ -1,0 +1,6 @@
+TXS1530-131	https://fermi.gsfc.nasa.gov/ssc/data/access/lat/LightCurveRepository/queryDB.php?typeOfRequest=lightCurveData&source_name=4FGL%20J1532.7-1319&cadence=monthly&flux_type=photon&index_type=fixed&ts_min=4
+PKS2155-304	https://fermi.gsfc.nasa.gov/ssc/data/access/lat/LightCurveRepository/queryDB.php?typeOfRequest=lightCurveData&source_name=4FGL%20J2158.8-3013&cadence=monthly&flux_type=photon&index_type=fixed&ts_min=4
+PG1553+113	https://fermi.gsfc.nasa.gov/ssc/data/access/lat/LightCurveRepository/queryDB.php?typeOfRequest=lightCurveData&source_name=4FGL%20J1555.7%2B1111&cadence=monthly&flux_type=photon&index_type=fixed&ts_min=4
+3C66A	https://fermi.gsfc.nasa.gov/ssc/data/access/lat/LightCurveRepository/queryDB.php?typeOfRequest=lightCurveData&source_name=4FGL%20J0222.6%2B4302&cadence=monthly&flux_type=photon&index_type=fixed&ts_min=4
+OC457	https://fermi.gsfc.nasa.gov/ssc/data/access/lat/LightCurveRepository/queryDB.php?typeOfRequest=lightCurveData&source_name=4FGL%20J0137.0%2B4751&cadence=monthly&flux_type=photon&index_type=fixed&ts_min=4
+PKS0250-225	https://fermi.gsfc.nasa.gov/ssc/data/access/lat/LightCurveRepository/queryDB.php?typeOfRequest=lightCurveData&source_name=4FGL%20J0252.8-2219&cadence=monthly&flux_type=photon&index_type=fixed&ts_min=4
