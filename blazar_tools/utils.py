@@ -41,7 +41,7 @@ def plot_analysis(df_data, df_ssa, blazar, split = None, save = False):
         df_limits = df_data[['t_mjd', 'upper_limits']].dropna()
         upper_limits = pd.Series(df_limits.upper_limits.values, index = df_limits.t_mjd.values)
         
-        time_mjd = df_data.t_mjd.values
+        #time_mjd = df_data.t_mjd.values
 
         ax1.plot(time_mjd, noise, alpha = 0.6, label = 'Noise')
         ax1.plot(time_mjd, osc, linestyle = 'dashed', lw = 2, label = f'Periodicity {osc_idx}')
