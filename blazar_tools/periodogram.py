@@ -26,13 +26,13 @@ class Periodogram:
     
     '''
 
-    def  __init__ (self, df_ssa, blazar, signal_error = None, T_min = 1, T_max = 6, split = None):
+    def  __init__ (self, df_ssa, blazar = 'None', signal_error = None, T_min = 1, T_max = 6, split = None):
         
         self.blazar = blazar
         self.df = df_ssa
         self.time = mjd_to_year(df_ssa.index.values)
         self.signal_error = signal_error
-        self.periods = np.linspace(max(T_min-0.5, 0), T_max, 500)  # Periods in years
+        self.periods = np.linspace(max(T_min, 0), T_max, 500)  # Periods in years
         self.T_max = T_max
         self.freqs = 1 / self.periods           # Angular frequencies
         self.ang_freqs = 2 * np.pi / self.periods
@@ -40,14 +40,19 @@ class Periodogram:
 
         
         
-    def gaussian_fit(self):
-
-        def gaussian(x, a, x0, sigma):
+    def gaussian(self, x, a, x0, sigma):
             return a * np.exp(-(x - x0)**2 / (2 * sigma**2))
         
+    def gaussian_fit(self):
+
         # 3. Recortar datos alrededor del pico para facilitar el ajuste
         # (Tomamos una ventana alrededor del pico para que el ajuste no se distraiga con otros picos)
-        window = int(len(self.periods) / 10) 
+        peak = self.h_peak
+        median = np.median(self.pgram)
+        if median/peak > 2:
+            window = int(len(self.pgram ) / 10)
+        else :
+            window = 15
         start = max(0, self.max_idx - window)
         end = min(len(self.periods), self.max_idx + window)
         
@@ -57,7 +62,7 @@ class Periodogram:
         try:
             # 4. Ajustar Gaussiana
             # p0 son los valores iniciales [altura, centro, ancho]
-            self.popt, pcov = curve_fit(gaussian, self.x_data, y_data, p0=[self.h_peak, self.p_peak, 0.1])
+            self.popt, pcov = curve_fit(self.gaussian, self.x_data, y_data, p0=[self.h_peak - np.min(self.pgram) , self.p_peak, 0.2])
             
             sigma_fit = abs(self.popt[2]) # El sigma ajustado
             self.fwhm = 2.355 * sigma_fit
@@ -133,22 +138,26 @@ class Periodogram:
 
 
     def LSP(self,  save = False, plot = True):
+        '''
+        Options: plot = False, save = False.
+        Returns a dictionary containing pgram, p_peak and fwhm.
+        
+        '''
 
         self.template_name = None
         self.signal = self.df.oscillatory.values
-        self.pgram = lombscargle(self.time, self.signal, self.ang_freqs, normalize=False)
+        self.pgram = lombscargle(self.time, self.signal, self.ang_freqs, normalize=True)
         self.max_idx = np.argmax(self.pgram)
         self.p_peak = self.periods[self.max_idx]
         self.h_peak = self.pgram[self.max_idx]
 
         self.gaussian_fit()
-        
-        if self.split is None:
-            print(f"Full LSP Period detected: {self.p_peak:.2f} +- {self.fwhm:.2f} yr")
-        else:
-            print(f" Split {self.split} LSP Period detected: {self.p_peak:.2f} +- {self.fwhm:.2f} yr")
 
         if plot:
+            if self.split is None:
+                print(f"Full LSP Period detected: {self.p_peak:.2f} +- {self.fwhm:.2f} yr")
+            else:
+                print(f" Split {self.split} LSP Period detected: {self.p_peak:.2f} +- {self.fwhm:.2f} yr")
             self.plot(save = save)
         s = pd.Series(self.pgram, index = self.periods) 
         d = {'pgram': s, 'period': self.p_peak, 'fwhm': self.fwhm}
