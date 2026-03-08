@@ -13,9 +13,15 @@ class GetLCRData:
     path: path of the txt file with the names of the blazars and links (JSON)
     
     """
-    def __init__(self, path):
-        self.links = dict( np.loadtxt(path, dtype = 'str') )
-        self.blazar_list = list(self.links.keys())
+    def __init__(self, path=None, df_links = None):
+
+        if path is not None:
+            self.links = dict( np.loadtxt(path, dtype = 'str') )
+            self.blazar_list = list(self.links.keys())
+        if df_links is not None:
+            self.links = pd.Series(df_links['link'].values, index = df_links['name'].values)
+            self.blazar_list = list(self.links.index)
+            
         self.df = None
         self.df_dict = {}
         for blazar in self.blazar_list:   

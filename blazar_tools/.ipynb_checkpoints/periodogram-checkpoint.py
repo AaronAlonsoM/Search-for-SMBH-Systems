@@ -40,6 +40,36 @@ class Periodogram:
 
         
         
+    def find_adaptive_window(self, max_window=50, min_window=8):
+        idx_peak = self.max_idx
+        pgram = self.pgram
+        
+        start = idx_peak
+        while start > 0 and (idx_peak - start) < max_window:
+            # Si el valor actual es mayor que el siguiente (yendo hacia atrás), 
+            # significa que hemos encontrado un mínimo y empieza a subir otro pico
+            if pgram[start - 1] > pgram[start]:
+                break
+            start -= 1
+            
+        # 3. Buscar hacia la DERECHA el primer valle
+        end = idx_peak
+        while end < len(pgram) - 1 and (end - idx_peak) < max_window:
+            if pgram[end + 1] > pgram[end]:
+                break
+            end += 1
+    
+        # 4. Asegurar un ancho mínimo para que curve_fit tenga puntos suficientes
+        if (idx_peak - start) < min_window: start = max(0, idx_peak - min_window)
+        if (end - idx_peak) < min_window: end = min(len(pgram), idx_peak + min_window)
+    
+        self.x_data = self.periods[start:end]
+        self.y_data = self.pgram[start:end]
+        
+        return start, end
+
+        
+        
     def gaussian(self, x, a, x0, sigma):
             return a * np.exp(-(x - x0)**2 / (2 * sigma**2))
         
@@ -47,27 +77,17 @@ class Periodogram:
 
         # 3. Recortar datos alrededor del pico para facilitar el ajuste
         # (Tomamos una ventana alrededor del pico para que el ajuste no se distraiga con otros picos)
-        peak = self.h_peak
-        median = np.median(self.pgram)
-        if median/peak > 2:
-            window = int(len(self.pgram ) / 10)
-        else :
-            window = 15
-        start = max(0, self.max_idx - window)
-        end = min(len(self.periods), self.max_idx + window)
         
-        self.x_data = self.periods[start:end]
-        y_data = self.pgram[start:end]
+        self.find_adaptive_window()
         
         try:
             # 4. Ajustar Gaussiana
             # p0 son los valores iniciales [altura, centro, ancho]
-            self.popt, pcov = curve_fit(self.gaussian, self.x_data, y_data, p0=[self.h_peak - np.min(self.pgram) , self.p_peak, 0.2])
+            self.popt, pcov = curve_fit(self.gaussian, self.x_data, self.y_data, p0=[self.h_peak - np.min(self.pgram) , self.p_peak, 0.2])
             
             sigma_fit = abs(self.popt[2]) # El sigma ajustado
             self.fwhm = 2.355 * sigma_fit
         except (RuntimeError, ValueError):
-            print('The gaussian fit for the peak does not converge')
             self.fwhm = np.nan
             return np.nan
 
