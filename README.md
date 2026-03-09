@@ -7,7 +7,7 @@ Here, some alternatives are presented to try to get more evidence on the previou
 
 - Time series analysis to identify the relevant components using a new approach.
 - First implementation of Fast Template Periodogram (FTP) <a href="#ref1">[2]</a> for blazar periodicity detection, using the most promising expermental data to confirm the new possible detections.
-- Periodicity detection using a Machine Learning model trained with simulated LCs, obtaining an improvement of 11% with respect the most recent results on periodicity detection against noise and a great reduction in computational work.
+- Periodicity detection using a Machine Learning model trained with simulated light curves (LCs), obtaining an improvement of 11% with respect the most recent results on periodicity detection against noise and a great reduction in computational work.
 
 An applied example of the method and the model is presented as a notebook.
 
@@ -16,7 +16,6 @@ An applied example of the method and the model is presented as a notebook.
 <a name="ref1">[1]</a> A. Rico et al., «Singular spectrum analysis of Fermi-LAT blazar light curves: A systematic search for periodicity and trends in the time domain», A&A, vol. 697, p. A35, may 2025, doi: 10.1051/0004-6361/202452495.
 
 <a name="ref1">[2]</a> J. Hoffman, J. Vanderplas, J. Hartman, y G. Bakos, «A Fast Template Periodogram for Detecting Non-sinusoidal Fixed-shape Signals in Irregularly Sampled Time Series», 7 de febrero de 2021, arXiv: arXiv:2101.12348. doi: 10.48550/arXiv.2101.12348.
-
 
 ```python
 
